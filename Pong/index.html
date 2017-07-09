@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>Pong</title>
+    </head>
+    <body>
+        <h2>Gaem</h2>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+    </body>
+    <script>
+        var canvas;
+        var canvasContext;
+
+        window.onload = function () {
+            canvas = document.getElementById('gameCanvas');
+            canvasContext = canvas.getContext('2d');
+            canvasContext.fillStyle = 'black';
+            canvasContext.fillRect(0, 0, canvas.width, canvas.height)
+            canvasContext.fillStyle = 'blue';
+            canvasContext.fillRect(340, 275, 50, 25)
+            canvasContext.fillStyle = 'white';
+            canvasContext.fillRect(350, 250, 100, 100)
+        }
+    </script>
+</html>
