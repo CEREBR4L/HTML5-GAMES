@@ -16,18 +16,26 @@
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
-            setInterval(drawEverything, 20);
+            var fps = 30;
+            setInterval(() => {
+                drawEverything();
+                moveEverything();
+            }, 1000 / fps);
         }
 
         function drawEverything(){
-            ballX = ballX + 3;
+            
 
             canvasContext.fillStyle = 'black';
             canvasContext.fillRect(0, 0, canvas.width, canvas.height)
             canvasContext.fillStyle = 'blue';
-            canvasContext.fillRect(340, 275, 50, 25)
+            canvasContext.fillRect(0, 275, 10, 125)
             canvasContext.fillStyle = 'white';
             canvasContext.fillRect(ballX, ballY, 10, 10)
+        }
+
+        function moveEverything(){
+            ballX = ballX + 5;
         }
     </script>
 </html>
