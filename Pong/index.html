@@ -10,8 +10,23 @@
         var canvas;
         var canvasContext;
         var ballX = 50;
-        var ballSpeedX = 5;
+        var ballSpeedX = 10;
         var ballY = 250;
+        var ballSpeedY = 4;
+
+        var player1PaddleY = 250;
+        const PADDLE_HEIGHT = 125;
+
+        function getMousePos(evt){
+            var rect = canvas.getBoundingClientRect();
+            var root = document.documentElement;
+            var mouseX = evt.clientX - rect.left - root.scrollLeft; 
+            var mouseY = evt.clientY - rect.top - root.scrollTop; 
+            return {
+                x : mouseX,
+                y : mouseY
+            }
+        }
 
         window.onload = function () {
             canvas = document.getElementById('gameCanvas');
@@ -22,12 +37,17 @@
                 moveEverything();
                 drawEverything();
             }, 1000 / fps);
+
+            canvas.addEventListener('mousemove', (e) => {
+                var mousePos = getMousePos(e);
+                player1PaddleY = mousePos.y - (PADDLE_HEIGHT / 2);
+            })
         }
 
         function drawEverything(){
             drawRect(0, 0, canvas.width, canvas.height, 'black'); //Background
-            drawRect(0, 275, 10, 125, 'blue'); // paddle - left
-            drawCircle(ballX, 150, 10, 'white'); // ball
+            drawRect(0, player1PaddleY, 10, PADDLE_HEIGHT, 'lime'); // paddle - left
+            drawCircle(ballX, ballY, 10, 'lime'); // ball
         }
 
         function drawRect(leftX, topY, width, height, color){
@@ -44,6 +64,13 @@
 
         function moveEverything(){
             ballX += ballSpeedX;
+            ballY += ballSpeedY;
+            if(ballY > canvas.height){
+                ballSpeedY = -ballSpeedY;    
+            }
+            if(ballY < 0){
+                ballSpeedY = -ballSpeedY;
+            }
             if(ballX > canvas.width){
                 ballSpeedX = -ballSpeedX;    
             }
