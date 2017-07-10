@@ -9,16 +9,25 @@
     <script>
         var canvas;
         var canvasContext;
+        var ballX = 50;
+        var ballY = 250;
 
         window.onload = function () {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
+
+            setInterval(drawEverything, 20);
+        }
+
+        function drawEverything(){
+            ballX = ballX + 3;
+
             canvasContext.fillStyle = 'black';
             canvasContext.fillRect(0, 0, canvas.width, canvas.height)
             canvasContext.fillStyle = 'blue';
             canvasContext.fillRect(340, 275, 50, 25)
             canvasContext.fillStyle = 'white';
-            canvasContext.fillRect(350, 250, 100, 100)
+            canvasContext.fillRect(ballX, ballY, 10, 10)
         }
     </script>
 </html>
