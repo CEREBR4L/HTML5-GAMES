@@ -25,14 +25,21 @@
         }
 
         function drawEverything(){
-            colourRect(0, 0, canvas.width, canvas.height, 'black'); //Background
-            colourRect(0, 275, 10, 125, 'blue'); // paddle - left
-            colourRect(ballX, ballY, 10, 10, 'white'); // ball
+            drawRect(0, 0, canvas.width, canvas.height, 'black'); //Background
+            drawRect(0, 275, 10, 125, 'blue'); // paddle - left
+            drawCircle(ballX, 150, 10, 'white'); // ball
         }
 
-        function colourRect(leftX, topY, width, height, color){
+        function drawRect(leftX, topY, width, height, color){
             canvasContext.fillStyle = color;
             canvasContext.fillRect(leftX, topY, width, height)
+        }
+
+        function drawCircle(x, y, radius, color){
+            canvasContext.fillStyle = color;
+            canvasContext.beginPath();
+            canvasContext.arc(x, y, radius, 0, Math.PI * 2, true);
+            canvasContext.fill();
         }
 
         function moveEverything(){
