@@ -10,6 +10,7 @@
         var canvas;
         var canvasContext;
         var ballX = 50;
+        var ballSpeedX = 5;
         var ballY = 250;
 
         window.onload = function () {
@@ -18,24 +19,30 @@
 
             var fps = 30;
             setInterval(() => {
-                drawEverything();
                 moveEverything();
+                drawEverything();
             }, 1000 / fps);
         }
 
         function drawEverything(){
-            
+            colourRect(0, 0, canvas.width, canvas.height, 'black'); //Background
+            colourRect(0, 275, 10, 125, 'blue'); // paddle - left
+            colourRect(ballX, ballY, 10, 10, 'white'); // ball
+        }
 
-            canvasContext.fillStyle = 'black';
-            canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-            canvasContext.fillStyle = 'blue';
-            canvasContext.fillRect(0, 275, 10, 125)
-            canvasContext.fillStyle = 'white';
-            canvasContext.fillRect(ballX, ballY, 10, 10)
+        function colourRect(leftX, topY, width, height, color){
+            canvasContext.fillStyle = color;
+            canvasContext.fillRect(leftX, topY, width, height)
         }
 
         function moveEverything(){
-            ballX = ballX + 5;
+            ballX += ballSpeedX;
+            if(ballX > canvas.width){
+                ballSpeedX = -ballSpeedX;    
+            }
+            if(ballX < 0){
+                ballSpeedX = -ballSpeedX;
+            }
         }
     </script>
 </html>
