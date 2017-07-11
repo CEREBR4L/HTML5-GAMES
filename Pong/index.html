@@ -21,7 +21,9 @@
         var ballSpeedY = 4;
 
         var player1PaddleY = 250;
+        var player2PaddleY = 250;
         const PADDLE_HEIGHT = 125;
+        const PADDLE_WIDTH = 10;
 
         function getMousePos(evt){
             var rect = canvas.getBoundingClientRect();
@@ -52,7 +54,8 @@
 
         function drawEverything(){
             drawRect(0, 0, canvas.width, canvas.height, 'black'); //Background
-            drawRect(0, player1PaddleY, 10, PADDLE_HEIGHT, 'lime'); // paddle - left
+            drawRect(0, player1PaddleY, PADDLE_WIDTH, PADDLE_HEIGHT, 'lime'); // paddle - left
+            drawRect(canvas.width - PADDLE_WIDTH, player2PaddleY, PADDLE_WIDTH, PADDLE_HEIGHT, 'lime'); // paddle - right
             drawCircle(ballX, ballY, 10, 'lime'); // ball
         }
 
@@ -78,10 +81,25 @@
                 ballSpeedY = -ballSpeedY;
             }
             if(ballX > canvas.width){
-                ballSpeedX = -ballSpeedX;    
+                checkCollision(player2PaddleY);
             }
             if(ballX < 0){
+                checkCollision(player1PaddleY);
+            }
+        }
+
+        function resetBall(){
+            ballSpeedX = -ballSpeedX;
+            ballX = canvas.width / 2;
+            ballY = canvas.height / 2;
+        }
+
+        function checkCollision(colider){
+            if(ballY > colider && ballY < colider + PADDLE_HEIGHT){
                 ballSpeedX = -ballSpeedX;
+            } 
+            else{
+                resetBall();
             }
         }
     </script>
