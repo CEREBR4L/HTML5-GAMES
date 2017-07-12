@@ -20,6 +20,9 @@
         var ballY = 250;
         var ballSpeedY = 4;
 
+        var player1Score = 0;
+        var player2Score = 0;
+
         var player1PaddleY = 250;
         var player2PaddleY = 250;
         const PADDLE_HEIGHT = 125;
@@ -57,6 +60,9 @@
             drawRect(0, player1PaddleY, PADDLE_WIDTH, PADDLE_HEIGHT, 'lime'); // paddle - left
             drawRect(canvas.width - PADDLE_WIDTH, player2PaddleY, PADDLE_WIDTH, PADDLE_HEIGHT, 'lime'); // paddle - right
             drawCircle(ballX, ballY, 10, 'lime'); // ball
+
+            canvasContext.fillText(player1Score, 100, 100)
+            canvasContext.fillText(player2Score, canvas.width - 100, 100)
         }
 
         function drawRect(leftX, topY, width, height, color){
@@ -72,6 +78,8 @@
         }
 
         function moveEverything(){
+            aiMovement();
+
             ballX += ballSpeedX;
             ballY += ballSpeedY;
             if(ballY > canvas.height){
@@ -81,10 +89,20 @@
                 ballSpeedY = -ballSpeedY;
             }
             if(ballX > canvas.width){
-                checkCollision(player2PaddleY);
+                player1Score += checkCollision(player2PaddleY, player1Score);
             }
             if(ballX < 0){
-                checkCollision(player1PaddleY);
+                player2Score += checkCollision(player1PaddleY, player2Score);
+            }
+        }
+
+        function aiMovement(){
+            var paddle2YCentre = player2PaddleY + (PADDLE_HEIGHT / 2);
+            if(paddle2YCentre < ballY - 35){
+                player2PaddleY += 6;
+            }
+            else if(paddle2YCentre < ballY + 35){
+                player2PaddleY -= 6;
             }
         }
 
@@ -94,12 +112,14 @@
             ballY = canvas.height / 2;
         }
 
-        function checkCollision(colider){
+        function checkCollision(colider, playerScore){
             if(ballY > colider && ballY < colider + PADDLE_HEIGHT){
                 ballSpeedX = -ballSpeedX;
+                return 0;
             } 
             else{
                 resetBall();
+                return 1;
             }
         }
     </script>
