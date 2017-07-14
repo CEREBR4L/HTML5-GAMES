@@ -22,11 +22,13 @@
 
         var player1Score = 0;
         var player2Score = 0;
+        var showWinScreen = true;
 
         var player1PaddleY = 250;
         var player2PaddleY = 250;
         const PADDLE_HEIGHT = 125;
         const PADDLE_WIDTH = 10;
+        const WIN_POINTS = 3;
 
         function getMousePos(evt){
             var rect = canvas.getBoundingClientRect();
@@ -57,6 +59,15 @@
 
         function drawEverything(){
             drawRect(0, 0, canvas.width, canvas.height, 'black'); //Background
+
+            if(showWinScreen){
+                canvasContext.font="25px Arial"; 
+                canvasContext.fillStyle = 'lime';
+                canvasContext.fillText('Click to continue..', canvas.width / 2, canvas.height / 2)
+                canvasContext.textAlign="center"; 
+                return;
+            }
+
             drawRect(0, player1PaddleY, PADDLE_WIDTH, PADDLE_HEIGHT, 'lime'); // paddle - left
             drawRect(canvas.width - PADDLE_WIDTH, player2PaddleY, PADDLE_WIDTH, PADDLE_HEIGHT, 'lime'); // paddle - right
             drawCircle(ballX, ballY, 10, 'lime'); // ball
@@ -78,6 +89,10 @@
         }
 
         function moveEverything(){
+            if(showWinScreen){
+                return;
+            }
+
             aiMovement();
 
             ballX += ballSpeedX;
@@ -89,11 +104,12 @@
                 ballSpeedY = -ballSpeedY;
             }
             if(ballX > canvas.width){
-                player1Score += checkCollision(player2PaddleY, player1Score);
+                player1Score += checkCollision(player2PaddleY);
             }
             if(ballX < 0){
-                player2Score += checkCollision(player1PaddleY, player2Score);
+                player2Score += checkCollision(player1PaddleY);
             }
+            gameOver();
         }
 
         function aiMovement(){
@@ -110,11 +126,24 @@
             ballSpeedX = -ballSpeedX;
             ballX = canvas.width / 2;
             ballY = canvas.height / 2;
+            return false;
         }
 
-        function checkCollision(colider, playerScore){
+        function gameOver(){
+            if(player1Score >= WIN_POINTS || player2Score >= WIN_POINTS){
+                player1Score = 0;
+                player2Score = 0;
+                showWinScreen = true;
+            }
+        }
+
+        function checkCollision(colider){
             if(ballY > colider && ballY < colider + PADDLE_HEIGHT){
                 ballSpeedX = -ballSpeedX;
+
+                var deltaY = ballY - (colider + PADDLE_HEIGHT / 2);
+                ballSpeedY = deltaY * 0.30;
+
                 return 0;
             } 
             else{
