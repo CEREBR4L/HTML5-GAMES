@@ -41,6 +41,14 @@
             }
         }
 
+        function handleMouseClick(e){
+            if(showWinScreen){
+                player1Score = 0;
+                player2Score = 0;
+                showWinScreen = false;
+            }
+        }
+
         window.onload = function () {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
@@ -55,19 +63,37 @@
                 var mousePos = getMousePos(e);
                 player1PaddleY = mousePos.y - (PADDLE_HEIGHT / 2);
             })
+
+            canvas.addEventListener('mousedown', handleMouseClick);
+        }
+
+        function drawNet(){
+            for(let i = 0; i <canvas.height; i += 50){
+                drawRect(canvas.width/2-1, i , 2, 20, 'lime');
+            }
         }
 
         function drawEverything(){
             drawRect(0, 0, canvas.width, canvas.height, 'black'); //Background
 
+            canvasContext.font="25px Arial"; 
+            
             if(showWinScreen){
-                canvasContext.font="25px Arial"; 
                 canvasContext.fillStyle = 'lime';
+                
+                if(player1Score >= WIN_POINTS){
+                     canvasContext.fillText('Left Player Won!', canvas.width / 2, 100)
+                }
+                else if(player2Score >= WIN_POINTS){
+                     canvasContext.fillText('Right Player Won!', canvas.width / 2, 100)
+                }
+
                 canvasContext.fillText('Click to continue..', canvas.width / 2, canvas.height / 2)
                 canvasContext.textAlign="center"; 
                 return;
             }
 
+            drawNet();
             drawRect(0, player1PaddleY, PADDLE_WIDTH, PADDLE_HEIGHT, 'lime'); // paddle - left
             drawRect(canvas.width - PADDLE_WIDTH, player2PaddleY, PADDLE_WIDTH, PADDLE_HEIGHT, 'lime'); // paddle - right
             drawCircle(ballX, ballY, 10, 'lime'); // ball
@@ -131,8 +157,6 @@
 
         function gameOver(){
             if(player1Score >= WIN_POINTS || player2Score >= WIN_POINTS){
-                player1Score = 0;
-                player2Score = 0;
                 showWinScreen = true;
             }
         }
